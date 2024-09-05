@@ -1,0 +1,57 @@
+use std::collections::HashMap;
+
+fn anagram_words(word: &str, anagrams: Vec<&str>) {
+    let sorted_word = sort(word);
+    let mut final_words = Vec::new();
+
+    for candidate in anagrams {
+        if sort(candidate) == sorted_word {
+
+            if !final_words.contains(&candidate) {
+                final_words.push(candidate);
+            }
+        }
+    }
+    
+    println!("{:?}", final_words);
+}
+
+fn sort(word: &str) -> String {
+    let mut chars: Vec<char> = word.to_lowercase().chars().collect();
+    chars.sort();
+    chars.into_iter().collect()
+}
+
+use std::thread;
+use std::time::Duration;
+
+fn anagram_words2(word : &str , anagrams: Vec<&str>) {
+    let sorted_word = sort(word);
+    let mut final_words = HashMap::new();
+    let mut i = 0;
+
+    for words in anagrams {
+        if sort(words) == sorted_word {
+            final_words.insert(i, words);
+        }
+        i += 1;
+        thread::sleep(Duration::from_secs_f32(0.1));
+    }
+
+    let mut total_number_of_anagrams = Vec::new();
+
+    for (key , value) in final_words {
+        println!("Key {} : Value {}" , key , value);
+        total_number_of_anagrams.push(value);
+    }
+
+    println!("Total Number of anagrams : {}" , total_number_of_anagrams.len());
+}
+
+fn main() {
+    let word = "hat";
+    let anagrams = vec!["hat", "hta", "ath", "tah", "xyz", "zxc"];
+    // anagram_words(word, anagrams);
+
+    anagram_words2(word, anagrams);
+}
